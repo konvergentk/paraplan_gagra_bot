@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from aiogram import Bot
+from fastapi.middleware.cors import CORSMiddleware
 
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 if not TOKEN:
@@ -15,6 +16,21 @@ if not CHAT_IDS or CHAT_IDS == [""]:
     raise ValueError("Нет CHAT_IDS в переменных окружения!")
 
 app = FastAPI()
+
+origins = [
+    "https://paraplangagra.ru",
+    "https://paraplangagra.pages.dev",
+    "https://www.paraplangagra.ru"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],  # Разрешить все методы
+    allow_headers=["*"],  # Разрешить все заголовки
+)
+
 bot = Bot(token=TOKEN)
 
 class BookingData(BaseModel):
