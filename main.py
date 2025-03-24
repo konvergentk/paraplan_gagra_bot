@@ -77,12 +77,14 @@ async def send_booking(data: BookingData):
     except ValueError:
         raise HTTPException(status_code=400, detail="Некорректный формат даты.")
 
+    formatted_date = datetime.strptime(date_str, "%Y-%m-%d").date().strftime("%d.%m.%y")
+
     # Формируем текст сообщения
     text = (
         f"🛫 Новая заявка на полёт!\n\n"
         f"👤 Имя: {name}\n"
         f"📞 Телефон: {phone}\n"
-        f"📅 Дата: {date_str}\n"
+        f"📅 Дата: {formatted_date}\n"
         f"💬 Комментарий: {message or '—'}"
     )
 
